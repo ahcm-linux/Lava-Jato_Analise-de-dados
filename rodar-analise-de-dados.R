@@ -33,30 +33,29 @@ p_estados <- plot_type_segments(dados_cand, "sg_uf", "Estado", "Nº de candidato
 p_partidos <- plot_type_segments(dados_cand, "sg_partido_2018", "Partido", "Nº de candidatos envolvidos na Lava Jato")
 
 # gráfico de envolvolvidos e não envolvidos, por gênero
-p_genero <- plot_type_stackedbars(dados_cand, "ds_genero", "Gênero", "Percentual")
+p_genero <- plot_type_stackedbars(dados_cand, "ds_genero", "Lava Jato", "Percentual", "Gênero: ", c(2, 1))
 
 # gráfico de envolvolvidos e não envolvidos, por grau de instrução
-p_educacao <- plot_type_stackedbars(dados_cand, "ds_grau_instrucao", "Grau de instrução", "Percentual")
+p_educacao <- plot_type_stackedbars(dados_cand, "ds_grau_instrucao", "Lava Jato", "Percentual", "Instrução: ", c(2, 1))
 
 # gráfico de envolvolvidos e não envolvidos, estado civil
-p_estadocivil <- plot_type_stackedbars(dados_cand, "ds_estado_civil", "Estado Civil", "Percentual")
+p_estadocivil <- plot_type_stackedbars(dados_cand, "ds_estado_civil", "Lava Jato", "Percentual", "Estado civil: ")
 
 # gráfico de envolvolvidos e não envolvidos, por etnia
-p_etnia <- plot_type_stackedbars(dados_cand, "ds_cor_raca", "Etnia", "Percentual")
+p_etnia <- plot_type_stackedbars(dados_cand, "ds_cor_raca", "Lava Jato", "Percentual", "Etnia")
 
 # gráfico de envolvolvidos e não envolvidos, por tipo de eleição
 dados_temp <- dados_cand
 dados_temp$ds_sit_tot_turno_new <- ifelse(dados_temp$ds_sit_tot_turno == "NÃO ELEITO", "Não eleito", "Eleito")
 
-p_eleicao <- plot_type_stackedbars(dados_temp, "ds_sit_tot_turno_new", "Eleição", "Percentual")
+p_eleicao <- plot_type_stackedbars(dados_temp, "ds_sit_tot_turno_new", "Lava Jato", "Percentual")
 
 # gráfico de envolvolvidos e não envolvidos, mostrando distribuição de idade
 p_idade <- plot_type_boxplot(dados_cand, "nr_idade_data_posse", "Envolvimento na Lava Jato", "Idade na data da posse")
 
 # gráfico de envolvolvidos e não envolvidos, mostrando distribuição de total de bens declarados
 #dados_temp$total_bem_candidato_log <- log(dados_cand$total_bem_candidato) # não incluído nos outputs devido à presença de dados faltantes
-
-p_bens <- plot_type_boxplot(dados_temp, "nr_idade_data_posse", "Envolvimento na Lava Jato", "Valor total dos bens declarados (log)")
+#p_bens <- plot_type_boxplot(dados_temp, "nr_idade_data_posse", "Envolvimento na Lava Jato", "Valor total dos bens declarados (log)") # não incluído nos outputs devido à presença de dados faltantes
 
 # gráfico de envolvolvidos e não envolvidos, mostrando distribuição de total de receitas declarados
 p_receitas <- plot_type_boxplot(dados_temp, "total_vr_receita_candidato", "Envolvimento na Lava Jato", "Valor total das receitas declaradas")
@@ -93,24 +92,80 @@ dados_matching_1 <- match.data(matching_1)
 tab_desc_matching <- bal.tab(matching_1, un = TRUE, stats = c("m", "v", "ks"))
 
 # gráficos do balanço das covariáveis antes e depois do matching
-p_matching_genero <- bal.plot(matching_1, var.name = "ds_genero", which = "both")
+p_matching_genero <- bal.plot(matching_1, var.name = "ds_genero", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  scale_x_discrete(labels = c("FEMININO" = "Feminino", "MASCULINO" = "Masculino")) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Gênero", y = "Percentual", title = "", caption = "(a)")
 
-p_matching_etnia <- bal.plot(matching_1, var.name = "ds_cor_raca", which = "both")
+p_matching_etnia <- bal.plot(matching_1, var.name = "ds_cor_raca", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  scale_x_discrete(labels = c("BRANCA" = "Branca", "PRETA" = "Preta", "Outro" = "Outro")) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Etnia", y = "Percentual", title = "", caption = "(b)")
 
-p_matching_estados <- bal.plot(matching_1, var.name = "sg_uf", which = "both")
+p_matching_estados <- bal.plot(matching_1, var.name = "sg_uf", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Estado", y = "Percentual", title = "", caption = "(c)")
 
-p_matching_estadocivil <- bal.plot(matching_1, var.name = "ds_estado_civil", which = "both")
+p_matching_estadocivil <- bal.plot(matching_1, var.name = "ds_estado_civil", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  scale_x_discrete(labels = c("não-solteiro" = "Não-solteiro", "solteiro" = "Solteiro")) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Estado civil", y = "Percentual", title = "", caption = "(d)")
 
-p_matching_educacao <- bal.plot(matching_1, var.name = "ds_grau_instrucao", which = "both")
+p_matching_educacao <- bal.plot(matching_1, var.name = "ds_grau_instrucao", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  scale_x_discrete(labels = c("não-superior" = "Não-superior", "superior" = "Supeiror")) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Grau de instrução", y = "Percentual", title = "", caption = "(e)")
 
-p_matching_partidos <- bal.plot(matching_1, var.name = "sg_partido_2018", which = "both")
+p_matching_partidos <- bal.plot(matching_1, var.name = "sg_partido_2018", which = "both") +
+  geom_bar(position = "fill", color = "black") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "black") +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Partido", y = "Percentual", title = "", caption = "(f)")
 
-p_matching_receitas <- bal.plot(matching_1, var.name = "log(total_vr_receita_candidato)", which = "both")
+p_matching_receitas <- bal.plot(matching_1, var.name = "log(total_vr_receita_candidato)", which = "both", colors = c("white", "grey"), type = "hist", mirror = TRUE) +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Total da receita declarada pelos candidatos (log)", y = "Percentual", title = "", caption = "(g)")
 
-p_matching_votos14 <- bal.plot(matching_1, var.name = "log(total_qt_votos_nominais_2014)", which = "both")
+p_matching_votos14 <- bal.plot(matching_1, var.name = "log(total_qt_votos_nominais_2014)", which = "both", colors = c("white", "grey"), type = "hist", mirror = TRUE) +
+  facet_grid(~ which, labeller = as_labeller(c("Unadjusted Sample" = "Amostra antes do matching", "Adjusted Sample" = "Amostra após o matching"))) +
+  scale_fill_manual("Lava Jato: ", values = c("0" = "white", "1" = "grey"), labels = c("0" = "Não", "1" = "Sim")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), breaks = scales::pretty_breaks()) +
+  theme_bw(base_size = 14) + theme(plot.caption = element_text(hjust = 0.5), panel.grid = element_blank(), strip.text = element_text(size = 14)) +
+  labs(x = "Total de votos nominais recebidos nas eleições de 2014 (log)", y = "Percentual", title = "", caption = "(h)")
 
 # love plot para avaliar balanço de covariáveis
-p_love_plot <- love.plot(matching_1, binary = "std", threshold = .1, var.order = "alphabetic")
+p_love_plot <- love.plot(matching_1, binary = "std", threshold = .1, var.order = "alphabetic", colors = c("grey", "black"))
 
 # ajustar modelos de regressão para total de votos nominais em 2018 contra lava_jato
 modelo_1 <- lm(log(total_qt_votos_nominais_2018) ~ lava_jato,
@@ -124,9 +179,9 @@ modelo_2 <- lm(log(total_qt_votos_nominais_2018) ~ lava_jato +
                data = dados_matching_1, weights = weights)
 
 # error padrão robusto para modelo_1 e modelo_2
-est_modelo_1 <- coeftest(modelo_1, vcov. = vcovCL, cluster =~ subclass) # modelo incluindo apenas lava_jato
+tab_modelo_1 <- coeftest(modelo_1, vcov. = vcovCL, cluster =~ subclass) # modelo incluindo apenas lava_jato
 
-est_modelo_2 <- coeftest(modelo_2, vcov. = vcovCL, cluster =~ subclass) # modelo incluindo demais covariáveis
+tab_modelo_2 <- coeftest(modelo_2, vcov. = vcovCL, cluster =~ subclass) # modelo incluindo demais covariáveis
 
 # intervalo de confiança bootstrap BCa
 pair_ids <- levels(matching_1$subclass)
@@ -135,16 +190,48 @@ ic <- boot.ci(boot_est, type = "bca")
 
 # gráfico do intervalo de confiança bootstrap BCa
 dados_ic <- data.frame(est = coef(modelo_1)[2], lwr = ic$bca[4], upr = ic$bca[5])
-p_icbootstrap <- ggplot(dados_ic, aes(ymin = lwr, ymax = upr, y = est, x = "Efeito da Lava Jato")) +
+p_icbootstrap <- ggplot(dados_ic, aes(ymin = lwr, ymax = upr, y = est,
+                                      x = "Efeito da Lava Jato\nsobre o total de votos\nnominais em 2018")) +
   geom_pointrange() +
   geom_hline(yintercept = 0, linetype = "dashed") +
   coord_flip() +
   scale_y_continuous(limits = c(-0.5, 0.5), breaks = scales::pretty_breaks()) +
-  theme_light(base_size = 12) +
+  theme_light(base_size = 14) +
   theme(panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank()) +
   labs(x = "", y = "Estimativa")
 
 # OUTPUTS ----------------------------------------------------------------------
 
+path <- "./resultados-da-analise-dos-dados-da-Lava-Jato/"
+
+# exportar tabelas
+write.csv(tab_contagem_cand, file = paste0(path, "Tabelas/", "contagem-de-candidatos-na-amostra", ".csv"), quote = FALSE, row.names = FALSE)
+write.csv(tab_modelo_1, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-1", ".csv"), quote = FALSE, row.names = TRUE)
+write.csv(tab_modelo_2, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-2", ".csv"), quote = FALSE, row.names = TRUE)
+
+# exportar figuras da análise descritiva
+ggsave(paste0(path, "Figuras/", "lava-jato-por-grau-de-instrucao", ".png"), plot = p_educacao, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-eleicao", ".png"), plot = p_eleicao, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-estado-civil", ".png"), plot = p_estadocivil, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-estados-uf", ".png"), plot = p_estados, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-etnia", ".png"), plot = p_etnia, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-genero", ".png"), plot = p_genero, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-idade", ".png"), plot = p_idade, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-partidos-", ".png"), plot = p_partidos, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-receitas-dos-candidatos", ".png"), plot = p_receitas, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-total-de-votos-nominais-em-2014", ".png"), plot = p_votos14, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lava-jato-por-total-de-votos-nominais-em-2018", ".png"), plot = p_votos18, width = 14, height = 10, units = "cm", dpi = 300)
+
+# exportar figuras do matching
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-grau-de-instrucao", ".png"), plot = p_matching_educacao, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "lbalanco-da-covariavel-estado-civil", ".png"), plot = p_matching_estadocivil, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-estados-uf", ".png"), plot = p_matching_estados, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-etnia", ".png"), plot = p_matching_etnia, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-genero", ".png"), plot = p_matching_genero, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-partidos", ".png"), plot = p_matching_partidos, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-receitas-dos-candidatos", ".png"), plot = p_matching_receitas, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-total-de-votos-nominais-em-2014", ".png"), plot = p_matching_votos14, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-love-plot", ".png"), plot = p_matching_votos14, width = 14, height = 10, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "estimativas-efeito-da-lava-jato-sobre-votos-nominais-em-2018", ".png"), plot = p_icbootstrap, width = 14, height = 10, units = "cm", dpi = 300)
 

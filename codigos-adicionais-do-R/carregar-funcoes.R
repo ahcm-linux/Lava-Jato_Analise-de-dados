@@ -21,14 +21,20 @@ plot_type_segments <- function(dados_cand, dvar, xlab, ylab)
 }
 
 # gerar gráfico de barras empilhadas
-plot_type_stackedbars <- function(dados_cand, dvar, xlab, ylab)
+plot_type_stackedbars <- function(dados_cand, dvar, xlab, ylab, lglab, col_ord = NULL)
 {
   dvar_pos <- which(colnames(dados_cand) == dvar)
   dados_cand$dvar <- dados_cand[, dvar_pos]
-    
-  p <- ggplot(dados_cand, aes(x = str_to_title(dvar), group = lava_jato, fill = lava_jato)) +
+  
+  unique_dvar <- sort(unique(dados_cand$dvar))
+  ifelse(length(unique_dvar) == 3, dvar_values <- c("white", "grey", "black"), dvar_values <- c("white", "grey"))
+  if (!is.null(col_ord)) dvar_values <- dvar_values[col_ord]
+  dvar_labels <- str_to_title(unique_dvar)
+  names(dvar_values) <- names(dvar_labels) <- unique_dvar
+  
+  p <- ggplot(dados_cand, aes(x = ifelse(lava_jato == "S", "Sim", "Não"), fill = dvar)) +
     geom_bar(position = "fill", color = "black", alpha = 0.5) +
-    scale_fill_manual("Lava Jato: ", values = c(S = "grey", N = "white"), labels = c(S = "Sim", N = "Não")) +
+    scale_fill_manual(lglab, values = dvar_values, labels = dvar_labels) +
     scale_y_continuous(breaks = scales::pretty_breaks(), labels = scales::percent_format(accuracy = 1)) +
     theme_light(base_size = 12) +
     theme(panel.grid.major.x = element_blank(),
