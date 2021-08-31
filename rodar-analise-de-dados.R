@@ -48,7 +48,7 @@ p_etnia <- plot_type_stackedbars(dados_cand, "ds_cor_raca", "Lava Jato", "Percen
 dados_temp <- dados_cand
 dados_temp$ds_sit_tot_turno_new <- ifelse(dados_temp$ds_sit_tot_turno == "NÃO ELEITO", "Não eleito", "Eleito")
 
-p_eleicao <- plot_type_stackedbars(dados_temp, "ds_sit_tot_turno_new", "Lava Jato", "Percentual")
+p_eleicao <- plot_type_stackedbars(dados_temp, "ds_sit_tot_turno_new", "Lava Jato", "Percentual", "Eleição: ")
 
 # gráfico de envolvolvidos e não envolvidos, mostrando distribuição de idade
 p_idade <- plot_type_boxplot(dados_cand, "nr_idade_data_posse", "Envolvimento na Lava Jato", "Idade na data da posse")
@@ -241,7 +241,7 @@ path <- "./resultados-da-analise-dos-dados-da-Lava-Jato/"
 
 # exportar tabelas
 write.csv(tab_contagem_cand, file = paste0(path, "Tabelas/", "contagem-de-candidatos-na-amostra", ".csv"), quote = FALSE, row.names = FALSE)
-write.csv(tab_desc_matching, file = paste0(path, "Tabelas/", "estatisticas-descritivas-relacionadas-ao-matching", ".csv"), quote = FALSE, row.names = FALSE)
+write.csv(tab_desc_matching$Observations, file = paste0(path, "Tabelas/", "estatisticas-descritivas-relacionadas-ao-matching", ".csv"), quote = FALSE, row.names = FALSE)
 write.csv(tab_modelo_1, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-apenas-com-lavajato", ".csv"), quote = FALSE, row.names = TRUE)
 write.csv(tab_modelo_2, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-com-todas-as-covariaveis", ".csv"), quote = FALSE, row.names = TRUE)
 
@@ -269,4 +269,3 @@ ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-receitas-dos-candidatos",
 ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-total-de-votos-nominais-em-2014", ".png"), plot = p_matching_votos14, width = 14, height = 10, units = "cm", dpi = 300)
 ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-love-plot", ".png"), plot = p_matching_votos14, width = 14, height = 10, units = "cm", dpi = 300)
 ggsave(paste0(path, "Figuras/", "estimativas-efeito-da-lava-jato-sobre-votos-nominais-em-2018", ".png"), plot = p_icbootstrap, width = 14, height = 10, units = "cm", dpi = 300)
-
