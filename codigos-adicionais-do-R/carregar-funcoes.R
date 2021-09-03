@@ -14,7 +14,8 @@ plot_type_segments <- function(dados_cand, dvar, xlab, ylab)
     scale_y_continuous(breaks = scales::pretty_breaks()) +
     theme_light(base_size = 12) +
     theme(panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank()) +
+          panel.grid.minor.y = element_blank(),
+          plot.caption = element_text(hjust = 0.5)) +
     labs(x = xlab, y = ylab)
     
     return(p)
@@ -38,7 +39,8 @@ plot_type_stackedbars <- function(dados_cand, dvar, xlab, ylab, lglab, col_ord =
     scale_y_continuous(breaks = scales::pretty_breaks(), labels = scales::percent_format(accuracy = 1)) +
     theme_light(base_size = 12) +
     theme(panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank()) +
+          panel.grid.minor.x = element_blank(),
+          plot.caption = element_text(hjust = 0.5)) +
     labs(x = xlab, y = ylab)
   
   return(p)
@@ -58,7 +60,8 @@ plot_type_boxplot <- function(dados_cand, dvar, xlab, ylab)
     scale_y_continuous(breaks = scales::pretty_breaks()) +
     theme_light(base_size = 12) +
     theme(panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank()) +
+          panel.grid.minor.x = element_blank(),
+          plot.caption = element_text(hjust = 0.5)) +
     labs(x = xlab, y = ylab)
   
   return(p)

@@ -5,6 +5,7 @@ suppressWarnings(
     "dplyr",
     "stringr",
     "ggplot2",
+    "gridExtra",
     "MatchIt",
     "cobalt",
     "optmatch",
