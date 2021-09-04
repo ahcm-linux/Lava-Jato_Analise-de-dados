@@ -1,0 +1,6 @@
+# Resultados da Análise de dados
+
+Esta pasta coném as figuras e tabelas estatísticas geradas como outputs pelo script de anpalise de dados [rodar-analise-de-dados.R](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/blob/main/rodar-analise-de-dados.R). As figuras e tabelas ja estão disponíveis aqui mesmo nas seguintes subpastas:
+
+1. [Figuras](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato/Figuras): Contém as figuras geradas pelo R para avaliar a adequação do *matching* e resultados da *regressão linear*. A subpasta [figuras-adicionais](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato/Figuras/figuras-adicionais) contém figuras relacionadas a uma análise descritiva básica, não relacionada ao *matching* ou à *regressão linear* sendo, portanto, não essenciais para análise estatística
+2. [Tabelas](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato/Tabelas): Contém as tabelas de estatísticas relacionadas ao *matching* e *regressão linear* 

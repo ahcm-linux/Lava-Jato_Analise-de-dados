@@ -26,23 +26,24 @@ As seguintes variáveis (visíveis no arquivo [dados-de-todos-os-candidatos.csv]
 7. **total_vr_receita_candidato**: Total da receita declarada pelo candidato
 8. **total_vr_receita_partido**: Total da receita declarada pelo partido
 9. **total_qt_votos_nominais_2014**: Total de votos nominais obtido pelo candidato em 2014
-10. **total_qt_votos_nominais_2018**: Total de votos nominais obtido pelo candidato em 2014
+10. **total_qt_votos_nominais_2018**: Total de votos nominais obtido pelo candidato em 2018
 11. **lava_jato**: Indicador para distinguir entre candidatos envolvidos e não envolvidos na Operação Lava Jato
+
+A única variável com dados faltantes e presente no arquivo de dados [dados-de-todos-os-candidatos.csv](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/blob/main/dados-Lava-Jato/dados-de-todos-os-candidatos.csv) foi *total_vr_bem_candidato*, aqual foi desconsiderada da análise de dados e, portanto, não aparece na lista de variáveis acima.
 
 A listagem dos candidatos envolvidos na Operação Lava Jato e considerados na amostra de dados está no arquivo [lista-de-candidatos-envolvidos.csv](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/blob/main/dados-Lava-Jato/lista-de-candidatos-envolvidos.csv).
 
 # Metódos estatísticos
 
-O efeito da variável de tratamento (*e.i* Lava Jato, designada como **lava_jato**) sobre o total de votos nominais obtidos pelo candidatos (variável dependente, designada como **total_qt_votos_nominais_2018**) foi estimado através de um modelo de regressão linear com observações ponderadas com pesos gerados pelo médoto de *matching* não paramétrico descrito em [Hoe *et al. (2007)*](https://www.cambridge.org/core/journals/political-analysis/article/matching-as-nonparametric-preprocessing-for-reducing-model-dependence-in-parametric-causal-inference/4D7E6D07C9727F5A604E5C9FCCA2DD21).
-
-O métodos de *matching* não paramétrico foi usado para controlar o efeito de variáveis de confusão sobre a variável dependente do modelo de regressão linear e permitir estimar adequadamente o efeito da variável de tratamento Lava Jato.
-
-O modelo de regressão linear foi especificado sob a suposições clássicas de erros independentes e normalmente distrbuídos e incluindo as demais variáveis descritas na seção anterior como covariáveis, ou seja, considerou-se um modelo de regressão linear múltipla "tradicional". As demais covariáveis foram incluídas para equilibrar qualquer desbalanço não corrigido pelo *matching*.
-
-Um intervalo de confiança *bootstrap* BCa (*Bias-Corrected and accelerated*) [(Efron, 1987)](https://www.jstor.org/stable/2289144), baseado em 999 reamostragens, foi obtido para o coefiente de regressão da variável Lava Jato.
-
 Todas as etapas da análise estatística foram realizadas no *software* R versão 3.6.1.
 
+O efeito da variável de tratamento (*e.i* Lava Jato, designada como **lava_jato**) sobre o total de votos nominais obtidos pelo candidatos (variável dependente, designada como **total_qt_votos_nominais_2018**) foi estimado através de um modelo de regressão linear com observações ponderadas com pesos gerados pelo médoto de *matching* não paramétrico descrito em [Hoe *et al. (2007)*](https://www.cambridge.org/core/journals/political-analysis/article/matching-as-nonparametric-preprocessing-for-reducing-model-dependence-in-parametric-causal-inference/4D7E6D07C9727F5A604E5C9FCCA2DD21).
+
+O métodos de *matching* não paramétrico foi usado para controlar o efeito de variáveis de confusão sobre a variável dependente do modelo de regressão linear e permitir estimar adequadamente o efeito da variável de tratamento Lava Jato. Especificamente, usou-se o métode de *full matching* e escores de propensão foram calculados usando regressão logística. Os pacotes do R *MatchIt* e *cobalt* foram usados para realizar o *matching*.
+
+O modelo de regressão linear foi especificado sob a suposições clássicas de erros independentes e normalmente distrbuídos e incluindo as demais variáveis descritas na seção anterior como covariáveis, ou seja, considerou-se um modelo de regressão linear múltipla "tradicional". As demais covariáveis foram incluídas para equilibrar qualquer desbalanço não corrigido pelo *matching*. O modelo de regressão foi estimado com a função *lm()* da base do R.
+
+Um intervalo de confiança *bootstrap* BCa (*Bias-Corrected and accelerated*) [(Efron, 1987)](https://www.jstor.org/stable/2289144), baseado em 999 reamostragens, foi obtido para o coefiente de regressão da variável Lava Jato. Bootstrap foi realizado a partir do pacote do R *boot*.
 # Resultados
 
 O coeficiente de regressão estimado para a variável Lava Jato foi negativo (igual a -0.27) e estatisticamente significativo (p-valor < 0.01) com respectivo intervalo de confiança *bootstrap* BCa igual a (-0.40, -0.07).
@@ -67,8 +68,8 @@ Após a realização do procedimento acima, você terá no seu RStudio todos os 
 
 As seguintes pastas estão neste repositório:
 
-1. [codigos-adicionais-do-R](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-adicionais-do-R) Contém scripts do R usados para instalar e carregar pacotes e funções
-2. [codigos-para-extrair-dados-do-TSE](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-para-extrair-dados-do-TSE) Contém códigos para fazer o download automático dos dados eleitorais do TSE e montar um banco de dados SQLite com todas as tabelas de dados necessárias para a análise estatística
-3. [dados-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/dados-Lava-Jato) Contém os arquivos de dados extraídos do banco de dados SQLite e usados diretamente no R para a análise estatística, incluindo também uma arquvi com a listagem dos candidatos envolvidos na Operação Lava Jato e considerados na amostra de dados analisada
-4. [packrat](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/packrat) Contém os arquivos necessários para o RStudio instalar e carregar automáticamente os pacotes usados na análise estatística
-5. [resultados-da-analise-dos-dados-da-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato) Contém figuras e tabelas que resumem os resultados obtidos pela análise estatística. As legendas das figuras e tabelas estão nas subpastas incluídas nesse diretório
+1. [codigos-adicionais-do-R](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-adicionais-do-R): Contém scripts do R usados para instalar e carregar pacotes e funções
+2. [codigos-para-extrair-dados-do-TSE](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-para-extrair-dados-do-TSE): Contém códigos para fazer o download automático dos dados eleitorais do TSE e montar um banco de dados SQLite com todas as tabelas de dados necessárias para a análise estatística
+3. [dados-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/dados-Lava-Jato): Contém os arquivos de dados extraídos do banco de dados SQLite e usados diretamente no R para a análise estatística, incluindo também uma arquvi com a listagem dos candidatos envolvidos na Operação Lava Jato e considerados na amostra de dados analisada
+4. [packrat](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/packrat): Contém os arquivos necessários para o RStudio instalar e carregar automáticamente os pacotes usados na análise estatística
+5. [resultados-da-analise-dos-dados-da-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato): Contém figuras e tabelas que resumem os resultados obtidos pela análise estatística. As legendas das figuras e tabelas estão nas subpastas incluídas nesse diretório
