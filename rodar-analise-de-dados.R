@@ -269,6 +269,7 @@ p_agrupado_1 <- arrangeGrob(p_genero + theme(legend.position = "top") + labs(cap
                             p_estadocivil + theme(legend.position = "top") + labs(caption = "(c)"),
                             p_etnia + theme(legend.position = "top") + labs(caption = "(d)"),
                             p_idade + theme(legend.position = "top") + labs(caption = "(e)"),
+                            p_eleicao + theme(legend.position = "top") + labs(caption = "(f)")
                             nrow = 3)
 p_agrupado_2 <- arrangeGrob(p_votos14 + theme(legend.position = "top") + labs(caption = "(a)"),
                             p_votos18 + theme(legend.position = "top") + labs(caption = "(b)"),
