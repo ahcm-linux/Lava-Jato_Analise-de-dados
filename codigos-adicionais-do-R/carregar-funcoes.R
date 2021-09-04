@@ -78,7 +78,7 @@ est_fun <- function(pairs, i)
   
   md_boot <- dados_matching_1[ids, ]
   
-  fit_boot <- lm(log(total_qt_votos_nominais_2018) ~ lava_jato +
+  fit_boot <- lm(total_qt_votos_nominais_2018 ~ lava_jato +
                    ds_genero + ds_cor_raca + sg_uf +
                    ds_estado_civil + ds_grau_instrucao + sg_partido_2018 +
                    log(total_vr_receita_candidato) +

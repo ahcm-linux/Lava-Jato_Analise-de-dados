@@ -43,7 +43,7 @@ O métodos de *matching* não paramétrico foi usado para controlar o efeito de 
 
 O modelo de regressão linear foi especificado sob a suposições clássicas de erros independentes e normalmente distrbuídos e incluindo as demais variáveis descritas na seção anterior como covariáveis, ou seja, considerou-se um modelo de regressão linear múltipla "tradicional". As demais covariáveis foram incluídas para equilibrar qualquer desbalanço não corrigido pelo *matching*. O modelo de regressão foi estimado com a função *lm()* da base do R.
 
-Um intervalo de confiança *bootstrap* BCa (*Bias-Corrected and accelerated*) [(Efron, 1987)](https://www.jstor.org/stable/2289144), baseado em 999 reamostragens, foi obtido para o coefiente de regressão da variável Lava Jato. Bootstrap foi realizado a partir do pacote do R *boot*.
+Um intervalo de confiança *bootstrap* BCa (*Bias-Corrected and accelerated*) [(Efron, 1987)](https://www.jstor.org/stable/2289144), baseado em 1999 reamostragens, foi obtido para o coefiente de regressão da variável Lava Jato. Bootstrap foi realizado a partir do pacote do R *boot*.
 # Resultados
 
 O coeficiente de regressão estimado para a variável Lava Jato foi negativo (igual a -0.27) e estatisticamente significativo (p-valor < 0.01) com respectivo intervalo de confiança *bootstrap* BCa igual a (-0.40, -0.07).

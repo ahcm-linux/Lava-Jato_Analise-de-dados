@@ -220,10 +220,10 @@ p_love_plot <- love.plot(matching_1, binary = "std", threshold = .1, var.order =
   labs(x = "Diferença média estandartizada", y = "", title = "")
 
 # ajustar modelos de regressão para total de votos nominais em 2018 contra lava_jato
-modelo_1 <- lm(log(total_qt_votos_nominais_2018) ~ lava_jato,
+modelo_1 <- lm(total_qt_votos_nominais_2018 ~ lava_jato,
                data = dados_matching_1, weights = weights)
 
-modelo_2 <- lm(log(total_qt_votos_nominais_2018) ~ lava_jato +
+modelo_2 <- lm(total_qt_votos_nominais_2018 ~ lava_jato +
                  ds_genero + ds_cor_raca + sg_uf +
                  ds_estado_civil + ds_grau_instrucao + sg_partido_2018 +
                  log(total_vr_receita_candidato) +
@@ -237,21 +237,20 @@ tab_modelo_2 <- coeftest(modelo_2, vcov. = vcovCL, cluster =~ subclass) # modelo
 
 # intervalo de confiança bootstrap BCa
 pair_ids <- levels(matching_1$subclass)
-boot_est <- boot(pair_ids, est_fun, R = 999)
+boot_est <- boot(pair_ids, est_fun, R = 1999)
 ic <- boot.ci(boot_est, type = "bca")
 
 # gráfico do intervalo de confiança bootstrap BCa
-dados_ic <- data.frame(est = coef(modelo_1)[2], lwr = ic$bca[4], upr = ic$bca[5])
-p_icbootstrap <- ggplot(dados_ic, aes(ymin = lwr, ymax = upr, y = est,
-                                      x = "Efeito da Lava Jato sobre o\ntotal de votos nominais em 2018")) +
+dados_ic <- data.frame(est = coef(modelo_2)[2], lwr = ic$bca[4], upr = ic$bca[5])
+p_icbootstrap <- ggplot(dados_ic, aes(ymin = lwr, ymax = upr, y = est, x = "")) +
   geom_pointrange() +
   geom_hline(yintercept = 0, linetype = "dashed") +
   coord_flip() +
-  scale_y_continuous(limits = c(-0.5, 0.5), breaks = scales::pretty_breaks()) +
+  scale_y_continuous(limits = c(-40000, 40000), breaks = seq(-40000, 40000, 10000)) +
   theme_light(base_size = 14) +
   theme(panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank()) +
-  labs(x = "", y = "Estimativa")
+  labs(x = "", y = "Efeito da Lava Jato sobre o total de votos nominais em 2018")
 
 # OUTPUTS ----------------------------------------------------------------------
 
@@ -320,4 +319,4 @@ ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-receitas-dos-partidos", "
 ggsave(paste0(path, "Figuras/", "balanco-da-covariavel-total-de-votos-nominais-em-2014", ".png"), plot = p_matching_votos14, width = width_2, height = height_2, units = "cm", dpi = 300)
 
 ggsave(paste0(path, "Figuras/", "balanco-de-todas-as-covariaveis-love-plot", ".png"), plot = p_love_plot, width = width_4, height = height_4, units = "cm", dpi = 300)
-ggsave(paste0(path, "Figuras/", "estimativas-efeito-da-lava-jato-sobre-votos-nominais-em-2018", ".png"), plot = p_icbootstrap, width = width_1, height = height_1, units = "cm", dpi = 300)
+ggsave(paste0(path, "Figuras/", "estimativas-efeito-da-lava-jato-sobre-votos-nominais-em-2018", ".png"), plot = p_icbootstrap, width = width_2, height = height_1, units = "cm", dpi = 300)
