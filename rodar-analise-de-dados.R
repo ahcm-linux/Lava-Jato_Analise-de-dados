@@ -259,7 +259,7 @@ path <- "./resultados-da-analise-dos-dados-da-Lava-Jato/"
 
 # exportar tabelas
 write.csv(tab_contagem_cand, file = paste0(path, "Tabelas/", "contagem-de-candidatos-na-amostra", ".csv"), quote = FALSE, row.names = FALSE)
-write.csv(tab_desc_matching$Balance, file = paste0(path, "Tabelas/", "estatisticas-descritivas-relacionadas-ao-matching", ".csv"), quote = FALSE, row.names = FALSE)
+write.csv(tab_desc_matching$Balance, file = paste0(path, "Tabelas/", "estatisticas-descritivas-relacionadas-ao-matching", ".csv"), quote = FALSE, row.names = TRUE)
 write.csv(tab_modelo_1, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-apenas-com-lavajato", ".csv"), quote = FALSE, row.names = TRUE)
 write.csv(tab_modelo_2, file = paste0(path, "Tabelas/", "estimativas-para-o-modelo-com-todas-as-covariaveis", ".csv"), quote = FALSE, row.names = TRUE)
 
