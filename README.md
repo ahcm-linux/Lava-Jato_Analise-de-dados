@@ -1,6 +1,6 @@
 Este texto pretende apresentar brevemente aspectos essenciais da análise de dados e mostrar o passo-a-passo de **como reproduzir esta análise de dados no seu computador**. Cada pasta deste repositório (*c.f.* pastas acima) trás um arquivo de texto como esse (com extensão .md) explicando o conteúdo da pasta.
 
-**Partes do texto realçadas em cor azul são clicáveis.**
+**Partes do texto realçadas em cor azul são clicáveis**
 
 # Objetivo da análise de dados
 
@@ -16,17 +16,18 @@ Dados descrevendo o perfil socioeconomico e político de uma amostra de candidat
 | Sim                           |                              45 |
 
 As seguintes variáveis (visíveis no arquivo [dados-de-todos-os-candidatos.csv](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/blob/main/dados-Lava-Jato/dados-de-todos-os-candidatos.csv)) foram consideradas na análise de dados:
-1. **ds_genero**: Gênero declarado pelo do candidato;
-2. **ds_cor_raca**: Etnia declarada pelo candidato;
-3. **sg_uf**: Estado pelo qual o candidato concorreu;
-4. **ds_estado_civil**: Estado civil do candidato;
-5. **ds_grau_de_instrucao**: Grau de instrução do candidato;
-6. **sg_partido_2018**: Partido do candidato;
-7. **total_vr_receita_candidato**: Total da receita declarada pelo candidato;
-8. **total_vr_receita_partido**: Total da receita declarada pelo partido;
-9. **total_qt_votos_nominais_2014**: Total de votos nominais obtido pelo candidato em 2014;
-10. **total_qt_votos_nominais_2018**: Total de votos nominais obtido pelo candidato em 2014;
-11. **lava_jato**: Indicador para distinguir entre candidatos envolvidos e não envolvidos na Operação Lava Jato.
+
+1. **ds_genero**: Gênero declarado pelo do candidato
+2. **ds_cor_raca**: Etnia declarada pelo candidato
+3. **sg_uf**: Estado pelo qual o candidato concorreu
+4. **ds_estado_civil**: Estado civil do candidato
+5. **ds_grau_de_instrucao**: Grau de instrução do candidato
+6. **sg_partido_2018**: Partido do candidato
+7. **total_vr_receita_candidato**: Total da receita declarada pelo candidato
+8. **total_vr_receita_partido**: Total da receita declarada pelo partido
+9. **total_qt_votos_nominais_2014**: Total de votos nominais obtido pelo candidato em 2014
+10. **total_qt_votos_nominais_2018**: Total de votos nominais obtido pelo candidato em 2014
+11. **lava_jato**: Indicador para distinguir entre candidatos envolvidos e não envolvidos na Operação Lava Jato
 
 A listagem dos candidatos envolvidos na Operação Lava Jato e considerados na amostra de dados está no arquivo [lista-de-candidatos-envolvidos.csv](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/blob/main/dados-Lava-Jato/lista-de-candidatos-envolvidos.csv).
 
@@ -51,12 +52,23 @@ Portanto, concluí-se que a candidatos envolvidos na Operação Lava Jato obtive
 # Como reproduzir os resultados no seu computador
 
 Caso você queira reproduzir esta análise de dados no seu computador, você precisará ter instalado no seu computador uma versão so *softwares* R igual ou superior a 3.6.1 e o RStudio. Após confirmar que voê tem os *softwares* exigidos, sigua as instruções a seguir:
-1. Faça o download deste repositório. Para fazer isso, procure no topo [desta página](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados) o botão verde com o nome **Code** ou **Código**. Clique no botão e escolha fazer o download do arquivo ZIP;
-2. Descompacte o arquivo ZIP na sua área de trabalho. A pasta gerada neste processo conterá todos os arquivos do repositório;
-3. Abra a pasta e clique duas vezes no arquivo *Lava-Jato_Analise-de-dados.Rproj*. Isto deverá abrir o projeto da anpalise de dados no RStudio;
-4. A partir do RStudio, abra o arquivo *rodar-analise-de-dados.R*;
-5. Pressione as teclas Ctrl + A (para selecionar todo o código R do script) e, em seguida, pressione as teclas Ctrl + Enter (para rodar os códigos selecionados).
+
+1. Faça o download deste repositório. Para fazer isso, procure no topo [desta página](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados) o botão verde com o nome **Code** ou **Código**. Clique no botão e escolha fazer o download do arquivo ZIP
+2. Descompacte o arquivo ZIP na sua área de trabalho. A pasta gerada neste processo conterá todos os arquivos do repositório
+3. Abra a pasta e clique duas vezes no arquivo *Lava-Jato_Analise-de-dados.Rproj*. Isto deverá abrir o projeto da anpalise de dados no RStudio
+4. A partir do RStudio, abra o arquivo *rodar-analise-de-dados.R*
+5. Pressione as teclas Ctrl + A (para selecionar todo o código R do script) e, em seguida, pressione as teclas Ctrl + Enter (para rodar os códigos selecionados)
 
 Após a realização do procedimento acima, você terá no seu RStudio todos os objetos gerados pela análise de dados.
 
-**Observe que durante este processo todos os pacotes R necessários serão instalados automaticamente**.
+**Observe que durante este processo todos os pacotes R necessários serão instalados automaticamente**
+
+# Descrição do conteúdo das pastas deste repositório
+
+As seguintes pastas estão neste repositório:
+
+1. [codigos-adicionais-do-R](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-adicionais-do-R) Contém scripts do R usados para instalar e carregar pacotes e funções
+2. [codigos-para-extrair-dados-do-TSE](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/codigos-para-extrair-dados-do-TSE) Contém códigos para fazer o download automático dos dados eleitorais do TSE e montar um banco de dados SQLite com todas as tabelas de dados necessárias para a análise estatística
+3. [dados-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/dados-Lava-Jato) Contém os arquivos de dados extraídos do banco de dados SQLite e usados diretamente no R para a análise estatística, incluindo também uma arquvi com a listagem dos candidatos envolvidos na Operação Lava Jato e considerados na amostra de dados analisada
+4. [packrat](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/packrat) Contém os arquivos necessários para o RStudio instalar e carregar automáticamente os pacotes usados na análise estatística
+5. [resultados-da-analise-dos-dados-da-Lava-Jato](https://github.com/ahcm-linux/Lava-Jato_Analise-de-dados/tree/main/resultados-da-analise-dos-dados-da-Lava-Jato) Contém figuras e tabelas que resumem os resultados obtidos pela análise estatística. As legendas das figuras e tabelas estão nas subpastas incluídas nesse diretório
